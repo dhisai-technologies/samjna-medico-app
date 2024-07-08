@@ -1,0 +1,8 @@
+{
+  "name": "python-server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "fastapi dev app/main.py"
+  }
+}
