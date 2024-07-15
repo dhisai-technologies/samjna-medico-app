@@ -1,4 +1,4 @@
-import type { ServerActionResponse } from "@utils/types";
+import type { ServerActionResponse } from "@ui-utils/types";
 
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";

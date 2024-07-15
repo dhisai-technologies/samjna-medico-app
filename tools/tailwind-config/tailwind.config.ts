@@ -10,7 +10,6 @@ const config = {
     './src/app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
     '../../packages/ui/src/**/*.{ts,tsx}',
-    '../../packages/editor/src/**/*.{ts,tsx}',
   ],
   prefix: '',
   theme: {
@@ -80,22 +79,15 @@ const config = {
           },
           to: { height: '0' },
         },
-        meteor: {
-          '0%': {
-            transform: 'rotate(215deg) translateX(0)',
-            opacity: '1',
-          },
-          '70%': { opacity: '1' },
-          '100%': {
-            transform: 'rotate(215deg) translateX(-500px)',
-            opacity: '0',
-          },
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        meteor: 'meteor 5s linear infinite',
+       "caret-blink": "caret-blink 1.25s ease-out infinite"
       },
     },
   },

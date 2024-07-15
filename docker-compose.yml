@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: samjna_postgres_dev
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=samjna
+    volumes:
+      - volume:/var/lib/postgresql/data
+    ports:
+      - 5450:5450
+    command: postgres -p 5450
+  rabbitmq:
+    image: rabbitmq:3.10-rc-management-alpine
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+volumes:
+  volume:

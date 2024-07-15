@@ -3,10 +3,13 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 
 import "./globals.css";
+import { AppProvider } from "@/lib/provider";
+import { appConfig } from "@ui-utils/config";
+import { getUser } from "@ui-utils/server";
 
 export const metadata: Metadata = {
-  title: "Samjna Analytics",
-  description: "Samjna Analytics",
+  title: appConfig.title,
+  description: appConfig.description,
 };
 
 export default async function RootLayout({
@@ -14,13 +17,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const user = getUser();
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${GeistSans.variable} ${GeistMono.variable}`}
-    >
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body>
+        <AppProvider user={user}>{children}</AppProvider>
+      </body>
     </html>
   );
 }

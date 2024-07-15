@@ -1,0 +1,35 @@
+{
+	"name": "@packages/broker",
+	"type": "module",
+	"exports": {
+		"./producers": {
+			"types": "./src/producers/index.ts",
+			"default": "./dist/producers/index.js"
+		},
+		"./consumers": {
+			"types": "./src/consumers/index.ts",
+			"default": "./dist/consumers/index.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc && resolve-tspaths",
+		"lint": "biome lint .",
+		"format": "biome format . ",
+		"clean": "rm -rf dist && rm -rf node_modules"
+	},
+	"peerDependencies": {
+		"@packages/database": "workspace:*",
+		"socket.io": "^4.7.5",
+		"drizzle-orm": "^0.31.2"
+	},
+	"dependencies": {
+		"amqplib": "^0.10.4"
+	},
+	"devDependencies": {
+		"@tools/typescript-config": "workspace:*",
+		"@types/amqplib": "^0.10.5",
+		"@types/node": "^20.14.5",
+		"resolve-tspaths": "^0.8.19",
+		"tsx": "^4.15.7"
+	}
+}

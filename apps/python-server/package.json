@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "fastapi dev app/main.py"
+    "dev": "source venv/bin/activate && fastapi dev app/main.py"
+  },
+  "devDependencies": {
+    "@tools/typescript-config": "workspace:*"
   }
 }

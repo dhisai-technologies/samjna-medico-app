@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@packages/ui": "workspace:*",
+    "@packages/ui-utils": "workspace:*",
     "@tanstack/react-table": "^8.17.3",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.2.11",
@@ -20,12 +21,14 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.0",
+    "react-markdown": "^9.0.1",
+    "server-only": "^0.0.1",
     "sonner": "^1.5.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@tools/typescript-config": "workspace:*",
     "@tools/tailwind-config": "workspace:*",
+    "@tools/typescript-config": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

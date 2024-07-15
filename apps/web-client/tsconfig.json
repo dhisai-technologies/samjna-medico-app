@@ -9,8 +9,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@ui/*": ["../../packages/ui/src/*"],
-      "@utils/*": ["../../packages/utils/src/*"],
-      "@editor/*": ["../../packages/utils/src/*"]
+      "@ui-utils/*": ["../../packages/ui-utils/src/*"],
     }
   },
   "include": [

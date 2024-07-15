@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "build:packages": "turbo run build --filter=\"./packages/*\"",
     "ui:add": "pnpm --filter @packages/ui ui:add",
     "format": "turbo format --continue --",
     "format:fix": "turbo format --continue -- --write",
