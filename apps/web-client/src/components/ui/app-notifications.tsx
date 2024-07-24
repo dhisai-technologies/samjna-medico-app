@@ -1,12 +1,12 @@
 "use client";
 
+import { useNotification } from "@/lib/providers/notification-provider";
 import { markNotificationAsRead } from "@ui-utils/actions";
 import { formatToHumanReadable, getErrorMessage } from "@ui-utils/helpers";
 import type { Notification } from "@ui-utils/types";
 import { Button } from "@ui/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/components/ui/popover";
 import { Separator } from "@ui/components/ui/separator";
-import { useNotification } from "@ui/providers/notification-provider";
 import { format } from "date-fns";
 import { BellIcon, CheckCheck, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ export function AppNotifications() {
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="icon" className="relative">
+        <Button variant="outline" size="icon" className="stroke-[1.5]">
           {currentNotifications.length > 0 ? (
             <div>
               <span className="absolute -top-1 -right-1 text-primary-foreground bg-primary h-3 w-3 rounded-full flex items-center justify-center text-[8px]">
@@ -42,7 +42,7 @@ export function AppNotifications() {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="p-0 min-w-96">
+      <PopoverContent align="end" className="p-0 min-w-72">
         <div className="flex items-center justify-between px-4 h-12">
           <h2 className="font-semibold">Notifications</h2>
           {currentNotifications.length > 0 && (

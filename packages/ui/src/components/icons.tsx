@@ -1,14 +1,11 @@
 import { cn } from "@ui/utils";
 import Image from "next/image";
-import Link from "next/link";
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
   logo: ({ className }: { className?: string }) => (
-    <Link href="/" className={cn("h-14 w-14", className)}>
-      <Image src="/logo.png" alt="samjna" width={56} height={56} className={cn("h-14 w-14", className)} />
-    </Link>
+    <Image src="/logo.png" alt="samjna" width={56} height={56} className={cn("h-14 w-14", className)} />
   ),
   spinner: (props: IconProps) => (
     <svg

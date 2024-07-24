@@ -1,0 +1,1 @@
+ALTER TABLE "files" ADD COLUMN "readable_upto" timestamp DEFAULT now() NOT NULL;

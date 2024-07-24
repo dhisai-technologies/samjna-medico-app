@@ -1,5 +1,16 @@
 import { relations } from "drizzle-orm";
-import { boolean, integer, pgEnum, pgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  doublePrecision,
+  integer,
+  jsonb,
+  pgEnum,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { generateId } from "./utils";
 
 export const rolesEnum = pgEnum("role", ["ADMIN", "DOCTOR", "EMPLOYEE", "INTERN"]);
@@ -72,6 +83,25 @@ export const logRelations = relations(logs, ({ one }) => ({
   }),
 }));
 
+export const files = pgTable("files", {
+  id: varchar("id", { length: 30 })
+    .$defaultFn(() => generateId())
+    .primaryKey(),
+  key: varchar("key", { length: 255 }).notNull().unique(),
+  name: text("name").notNull(),
+  userId: integer("user_id").notNull(),
+  mimetype: text("mimetype").notNull(),
+  size: doublePrecision("size").notNull(),
+  isPublic: boolean("is_public").default(false).notNull(),
+  readableBy: jsonb("readable_by"),
+  readableUpto: timestamp("readable_upto").notNull().defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+
 export type User = typeof users.$inferSelect;
 export type Notification = typeof notifications.$inferSelect;
 export type Log = typeof logs.$inferSelect;
+export type File = typeof files.$inferSelect;

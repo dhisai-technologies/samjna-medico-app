@@ -5,6 +5,7 @@ export function getRoleBasedNav(
     title: string;
     href: string;
     active: string;
+    icon: React.JSX.Element | React.ReactNode;
   }[],
   role: User["role"] = "EMPLOYEE",
   exclude: Record<string, string[]> = {},

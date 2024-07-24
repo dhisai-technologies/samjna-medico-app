@@ -1,4 +1,5 @@
 import { AppHeader } from "@/components/ui/app-header";
+import { AppLayout } from "@/components/ui/app-layout";
 
 export default function Layout({
   children,
@@ -6,9 +7,13 @@ export default function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <AppHeader />
-      <div className="flex flex-col p-6 h-[calc(100vh-theme(spacing.16))] w-screen overflow-y-scroll">{children}</div>
-    </>
+    <AppLayout>
+      <div className="flex-col flex flex-1 overflow-y-scroll bg-muted">
+        <AppHeader className="md:flex pr-5" />
+        <div className="md:rounded-tl-2xl border border-border bg-background flex flex-col gap-2 flex-1 w-full h-full">
+          {children}
+        </div>
+      </div>
+    </AppLayout>
   );
 }

@@ -1,8 +1,8 @@
 import { config, retrieve } from "@ui-utils/server";
 import type { User } from "@ui-utils/types";
-import type { SearchParams } from "@ui/types";
-
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/components/ui/card";
 import { Separator } from "@ui/components/ui/separator";
+import type { SearchParams } from "@ui/types";
 import { UsersTable } from "./_components/users-table";
 
 async function getUsers(searchParams: SearchParams) {
@@ -29,13 +29,17 @@ export default async function UserManagementPage({
 }) {
   const { pageCount, users } = await getUsers(searchParams);
   return (
-    <main className="space-y-6 w-[75vw] mx-auto flex flex-col">
-      <div>
-        <h3 className="text-lg font-medium">Users</h3>
-        <p className="text-sm text-muted-foreground">Manage your users details and accessibility.</p>
-      </div>
-      <Separator />
-      <UsersTable data={users} pageCount={pageCount} />
+    <main className="p-3 md:p-6">
+      <Card className="space-y-6 w-full md:w-[75vw] mx-auto flex flex-col">
+        <CardHeader className="pb-0">
+          <CardTitle>Users</CardTitle>
+          <CardDescription>Manage your users details and accessibility.</CardDescription>
+        </CardHeader>
+        <Separator />
+        <CardContent>
+          <UsersTable data={users} pageCount={pageCount} />
+        </CardContent>
+      </Card>
     </main>
   );
 }
