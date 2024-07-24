@@ -7,16 +7,12 @@ import { eq } from "drizzle-orm";
 import { Server } from "socket.io";
 import { logConsumer, logger, notificationConsumer, notifier } from "./tools";
 
-async function startServer() {
-  await client.connect();
-
-  console.log("📦 connected to database");
-
+function startServer() {
   const server = createServer();
 
   const httpServer = createHttpServer(server);
 
-  const io = new Server(httpServer, {
+  const io: Server = new Server(httpServer, {
     cors: {
       origin: config.CLIENT_URL,
     },
@@ -27,21 +23,27 @@ async function startServer() {
       const user = await db.query.users.findFirst({ where: eq(users.email, email) });
       if (!user) return;
       socket.join(`notification-${user.id}`);
-      console.log(`🙂 user joined room notification-${user.id}`);
       const userNotifications = await db.select().from(notifications).where(eq(notifications.userId, user.id));
       socket.emit("notifications", userNotifications);
+    });
+    socket.on("receive-analytics", async (email: string) => {
+      const user = await db.query.users.findFirst({ where: eq(users.email, email) });
+      if (!user) return;
+      socket.join(`analytics-${user.id}`);
     });
   });
 
   httpServer.listen(config.PORT, async () => {
     console.log(`🚀 started ${config.NAME} on [::]:${config.PORT}, url: http://localhost:${config.PORT}`);
+    await client.connect();
+    console.log("📦 connected to database");
     await logger.connect();
     await logConsumer.listen(db);
     await notifier.connect();
     await notificationConsumer.listen(db, io);
   });
 
-  return server;
+  return io;
 }
 
-startServer();
+export const io: Server = startServer();

@@ -87,7 +87,6 @@ export const uploadFiles: AppController = catchAsync(async (req, res) => {
       size: file.size,
       userId: req.user.id,
     });
-
     keys.push(key);
   }
   logger.trace({

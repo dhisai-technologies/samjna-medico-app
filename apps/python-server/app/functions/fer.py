@@ -101,6 +101,7 @@ def prediction(frames, transform, model, model_arousal, model_valence, device,fp
 
     frame_count = 0
     time_stamps=[]
+    faces_=0
     for frame in tqdm(frames):
         timestamp=frame_count/fps
         time_stamps.append(timestamp)
@@ -112,6 +113,7 @@ def prediction(frames, transform, model, model_arousal, model_valence, device,fp
         faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
         for x, y, w, h in faces:
+            faces_+=1
             # Extract the region of interest (the face)
             face = frame[y : y + h, x : x + w]
 
@@ -158,7 +160,7 @@ def prediction(frames, transform, model, model_arousal, model_valence, device,fp
             emotion_list.append(label)
             break
 
-
+    print("faces detected : ",faces_)
     x = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprised"]
     class_labels = ["angry", "disgust", "fear", "happy", "neutral", "sad","surprised"]
     class_wise_frame_count = dict(zip(class_labels, emotion_count))
@@ -182,8 +184,11 @@ def prediction(frames, transform, model, model_arousal, model_valence, device,fp
         "sad": matrix[5],
         "surprise": matrix[6],
     }
+    l=min(len(emotion_list),len(time_stamps))
+    emotion_list=emotion_list[:l]
+    time_stamps=time_stamps[:l]
     data = {"Time Stamp": time_stamps, "Emotion": emotion_list}
-    print(len(time_stamps), len(emotion_list))
+    print(len(data),len(time_stamps))
     df = pd.DataFrame(data)
     
 

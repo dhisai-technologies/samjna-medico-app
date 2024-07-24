@@ -42,7 +42,7 @@ export function AppHeader({ className, ...props }: AppHeaderProps) {
               <CircleUser className="w-[18px] h-[18px] stroke-[1.5]" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="min-w-72">
             <menu className="p-1 flex flex-col">
               <div className="flex items-center justify-between">
                 <div className="p-2 space-y-1">

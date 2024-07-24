@@ -7,6 +7,7 @@ import logging
 logging.getLogger('absl').setLevel(logging.ERROR)
 from moviepy.editor import VideoFileClip
 import pandas as pd
+from app.utils.session import create_session, send_analytics, send_csv
 from app.functions.Speech import *
 from app.functions.eye_track import *
 from app.functions.fer import *
@@ -14,7 +15,9 @@ from app.functions.fer import *
 
 
 async def predict(video_path: str, user_id: str):
-	print("I am called")
+	
+	uid = await create_session(user_id)
+
 	models_folder='/Users/nagasaivegur/Developer/work/dhisai/samjna-medico-app/apps/python-server/app/models'    #change this path to folder_path where models are saved
 	#MODELS FOLDER
 	speech_model=os.path.join(models_folder,'speech.keras')
@@ -22,7 +25,6 @@ async def predict(video_path: str, user_id: str):
 	valence_model=os.path.join(models_folder,'valence3.pt')
 	arousal_model=os.path.join(models_folder,'arousal4.pt')
 
-	print("I am running...1")
 	#change path to directory in which you want to get output
 	output_dir = 'output'
 	if not os.path.exists(output_dir):
@@ -33,18 +35,15 @@ async def predict(video_path: str, user_id: str):
 	Speech_log_path = os.path.join(output_dir,"speech_log.csv")
 	eye_log_path = os.path.join(output_dir,"eyetrack_log.csv")
 
-	print("I am running...2")
 
 	video_clip = VideoFileClip(video_path)
+	video_clip = video_clip.set_fps(30)
 	fps = video_clip.fps
 	audio = video_clip.audio
-	audio_path = os.path.join(output_dir,'extracted_audio.wav')
+	audio_path = 'extracted_audio.wav'
 	audio.write_audiofile(audio_path)
 	video_frames = [frame for frame in video_clip.iter_frames()]
 
-	print("Frames: ", len(video_frames))
-
-	print("I am running...3")
 
 	##EYE TRACKING
 	fc=Facetrack()
@@ -53,13 +52,12 @@ async def predict(video_path: str, user_id: str):
 	eye_df=pd.DataFrame(preds,columns=column)
 	eye_df.to_csv(eye_log_path,index=False)
 
-	print("I am running...4")
 
 	#FACIAL EXPRESSION RECOGNITION
 	class_wise_frame_count,fer_df, histogram, mat, x, y=fer_pred(video_frames,fps,fer_model,valence_model,arousal_model)
 	fer_df.to_csv(fer_log_path, index=False)
 
-	# #SPEECH EMOTION RECOGNITION
+	# SPEECH EMOTION RECOGNITION
 	# emotions_df,major_emotion,word=speech(audio_path,speech_model)
 	# emotions_df.to_csv(Speech_log_path, index=False)
 
@@ -81,9 +79,40 @@ async def predict(video_path: str, user_id: str):
 
 	print("\n*****FER Predictions*****\n")
 	print("class_wise_frame_count\n",class_wise_frame_count)
+
+
 	print("\nMatrix : ",)
 	for row in mat:
 			print(row)
+
+	await send_analytics({
+		"uid": uid,
+		"user_id": user_id, 
+		"analytics": {
+			"eye_tracking": {
+				"duration": video_clip.duration,
+			"total_blinks": preds[-1][2],
+			"average_blink_duration": preds[-1][3],
+			},
+			"fer": {
+				"class_wise_frame_count": class_wise_frame_count,
+				"matrix": mat
+			},
+			"speech": {
+
+			}
+		}
+	})
+
+	await send_csv({
+			"uid": uid,
+			"user_id": user_id, 
+			"csv": {
+				"eye_tracking": eye_df.to_json(orient='records'),
+				"fer": fer_df.to_json(orient='records'),
+				"speech": {}
+			}
+	})
 
 	if os.path.exists(audio_path):
 			os.remove(audio_path)

@@ -1,12 +1,19 @@
-"use client";
+import type { Notification } from "@ui-utils/types";
 
 import { appConfig } from "@ui-utils/config";
+import { useAuth } from "@ui/providers/auth-provider";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { type Socket, io } from "socket.io-client";
+import { io } from "socket.io-client";
+import type { Analytics, CSV } from "../types/analytics";
 
 interface SocketContextType {
-  socket?: Socket;
+  notifications: Notification[];
+  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
+  analytics?: Analytics;
+  setAnalytics: React.Dispatch<React.SetStateAction<Analytics | undefined>>;
+  csv?: CSV;
+  setCSV: React.Dispatch<React.SetStateAction<CSV | undefined>>;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -16,16 +23,31 @@ export function SocketProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [socket, setSocket] = useState<Socket>();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [analytics, setAnalytics] = useState<Analytics>();
+  const [csv, setCSV] = useState<CSV>();
+  const { user } = useAuth();
   useEffect(() => {
-    const socket = io(appConfig.fastapi, {
-      path: "/socket.io",
-    });
+    if (!user?.email) return;
+    const socket = io(appConfig.notifier);
     socket.on("connect", () => {
-      setSocket(socket);
+      socket.emit("receive-notifications", user.email);
+      socket.emit("receive-analytics", user.email);
+      socket.on("notifications", (notifications: Notification[]) => setNotifications(notifications));
+      socket.on("notification", (notification: Notification) => setNotifications((prev) => [...prev, notification]));
+      socket.on("analytics", (analytics: Analytics) => {
+        setAnalytics(analytics);
+      });
+      socket.on("csv", (csv: CSV) => {
+        setCSV(csv);
+      });
     });
-  }, []);
-  return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
+  }, [user]);
+  return (
+    <SocketContext.Provider value={{ notifications, setNotifications, analytics, setAnalytics, setCSV, csv }}>
+      {children}
+    </SocketContext.Provider>
+  );
 }
 
 export function useSocket() {

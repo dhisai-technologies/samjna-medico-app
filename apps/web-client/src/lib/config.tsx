@@ -1,4 +1,4 @@
-import { FileText, LayoutDashboard, Package2, Settings, UsersRound } from "lucide-react";
+import { FileText, LayoutDashboard, Package2, Settings, Shapes, UsersRound } from "lucide-react";
 
 export const sidebar = [
   {
@@ -6,6 +6,12 @@ export const sidebar = [
     href: "/",
     active: "default",
     icon: <LayoutDashboard className="h-5 w-5 flex-shrink-0 stroke-[1.5px]" />,
+  },
+  {
+    title: "Sessions",
+    href: "/sessions",
+    active: "default",
+    icon: <Shapes className="h-5 w-5 flex-shrink-0 stroke-[1.5px]" />,
   },
   {
     title: "Storage",

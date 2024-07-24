@@ -101,7 +101,23 @@ export const files = pgTable("files", {
     .$onUpdate(() => new Date()),
 });
 
+export const sessions = pgTable("sessions", {
+  id: varchar("id", { length: 30 })
+    .$defaultFn(() => generateId())
+    .primaryKey(),
+  uid: varchar("uid", { length: 255 }).notNull().unique(),
+  key: varchar("key", { length: 255 }),
+  analytics: jsonb("analytics"),
+  csv: jsonb("csv"),
+  userId: integer("user_id").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+
 export type User = typeof users.$inferSelect;
 export type Notification = typeof notifications.$inferSelect;
 export type Log = typeof logs.$inferSelect;
 export type File = typeof files.$inferSelect;
+export type Session = typeof sessions.$inferSelect;

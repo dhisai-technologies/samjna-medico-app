@@ -1,6 +1,6 @@
 "use client";
 
-import { useNotification } from "@/lib/providers/notification-provider";
+import { useSocket } from "@/lib/providers/socket-provider";
 import { markNotificationAsRead } from "@ui-utils/actions";
 import { formatToHumanReadable, getErrorMessage } from "@ui-utils/helpers";
 import type { Notification } from "@ui-utils/types";
@@ -14,7 +14,7 @@ import Markdown from "react-markdown";
 import { toast } from "sonner";
 
 export function AppNotifications() {
-  const { notifications, setNotifications } = useNotification();
+  const { notifications, setNotifications } = useSocket();
   const [currentNotifications, setCurrentNotifications] = useState<Notification[]>([]);
   const [open, onOpenChange] = useState(false);
   useEffect(() => {

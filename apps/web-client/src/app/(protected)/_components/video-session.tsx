@@ -2,8 +2,8 @@
 
 import { MultiStepLoader } from "@/components/multi-step-loader";
 import { TypewriterEffectSmooth } from "@/components/typewriter-effect";
-import { uploadFiles } from "@/lib/actions";
 import SessionImage from "@/lib/images/session.png";
+import { useSocket } from "@/lib/providers/socket-provider";
 import type { Word } from "@/lib/types";
 import { Button, buttonVariants } from "@ui/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@ui/components/ui/card";
@@ -18,18 +18,20 @@ import RecordRTC from "recordrtc";
 import { processFile } from "../_lib/actions";
 import { loadingStates, questions } from "../_lib/config";
 import { createFileFromBlob } from "../_lib/utils";
+import { EyeTracking } from "./eye-tracking";
+import { FER } from "./fer";
+import { Speech } from "./speech";
 
 export default function VideoSession() {
   const [recording, setRecording] = useState(false);
   const [sessionStarted, setSessionStarted] = useState(false);
   const [count, setCount] = useState(0);
   const [words, setWords] = useState<Word[]>([]);
-  const [processing, setProcessing] = useState(true);
-  const [recorded, setRecorded] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const webcamRef = useRef<ReactWebcam>(null);
   const mediaRecorderRef = useRef<RecordRTC>(null);
+  const { analytics, csv, setAnalytics } = useSocket();
   const { user } = useAuth();
-  const [result, setResult] = useState<Record<string, unknown>>();
   const [startTime, setStartTime] = useState(0);
 
   const startRecording = (time: number) => {
@@ -51,6 +53,7 @@ export default function VideoSession() {
   const saveRecording = (time: number) => {
     if (!mediaRecorderRef.current) return;
     setRecording(false);
+    setProcessing(true);
     mediaRecorderRef.current.stopRecording(async () => {
       if (!mediaRecorderRef.current) return;
       const blob = mediaRecorderRef.current.getBlob();
@@ -59,10 +62,11 @@ export default function VideoSession() {
         const file = createFileFromBlob(seekableBlob);
         const formData = new FormData();
         formData.append("files", file);
-        uploadFiles(formData);
+        // uploadFiles(formData);
         formData.append("user_id", user.id.toString());
         await processFile(formData);
-        setRecorded(true);
+        mediaRecorderRef.current?.destroy();
+        webcamRef.current?.stream?.getTracks().forEach((track) => track.stop());
       });
     });
   };
@@ -84,18 +88,14 @@ export default function VideoSession() {
       synth.cancel();
     };
   }, [words]);
-
-  // useEffect(() => {
-  //   if (!socket) return;
-  //   socket.emit("join", user.id.toString());
-  //   socket.on("result", (result: Record<string, unknown>) => {
-  //     setResult(result);
-  //     setProcessing(false);
-  //   });
-  // }, [socket, user]);
+  useEffect(() => {
+    if (analytics) {
+      setProcessing(false);
+    }
+  }, [analytics]);
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-      {!recorded ? (
+    <div className="bg-background relative w-full h-full flex flex-col items-center justify-center gap-3">
+      {!analytics ? (
         <>
           {sessionStarted ? (
             <Card className="max-w-5xl m-auto p-3">
@@ -150,8 +150,12 @@ export default function VideoSession() {
                       <Button
                         onClick={() => {
                           setRecording(false);
+                          setCount(0);
+                          setWords([]);
+                          setAnalytics(undefined);
                           mediaRecorderRef.current?.reset();
                           startRecording(Date.now());
+                          setProcessing(false);
                         }}
                         variant="outline"
                       >
@@ -190,9 +194,29 @@ export default function VideoSession() {
           )}
         </>
       ) : (
-        <div>
-          <p>Processing...</p>
-          {result && <pre className="whitespace-pre-line">{JSON.stringify(result, null, 2)}</pre>}
+        <section className="flex flex-col items-center gap-3">
+          <div className="grid grid-cols-2 gap-3">
+            <FER analytics={analytics.fer} csv={csv?.fer} />
+            <Speech analytics={analytics.speech} csv={csv?.speech} />
+            <EyeTracking analytics={analytics.eye_tracking} csv={csv?.eye_tracking} />
+          </div>
+          <Button
+            onClick={() => {
+              setAnalytics(undefined);
+              setSessionStarted(false);
+              setRecording(false);
+              setCount(0);
+              setWords([]);
+              setProcessing(false);
+            }}
+            className="w-52"
+          >
+            New Session
+          </Button>
+        </section>
+      )}
+      {processing && (
+        <div className="absolute inset-0 bg-background">
           <MultiStepLoader loadingStates={loadingStates} loading={processing} duration={2000} />
         </div>
       )}

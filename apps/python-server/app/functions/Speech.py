@@ -19,8 +19,9 @@ label_mapping = {
 }
 
 def features_extractor(file_name):
+    print(file_name)
     audio, sample_rate = librosa.load(file_name, res_type='kaiser_best')
-
+    print(len(audio))
     # Extract MFCC features
     mfccs_features = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=25)
     mfccs_scaled_features = np.mean(mfccs_features.T, axis=0)
@@ -43,11 +44,13 @@ def features_extractor(file_name):
     return features
 
 def predict_emotions(audio_path, interval,model_s):
-    audio_data, samplerate = sf.read(audio_path)
+    audio_data, samplerate = librosa.load(audio_path, res_type='kaiser_best')
     duration = len(audio_data) / samplerate
     emotions = []
+    print("Duration: ", duration)
 
     for start in np.arange(0, duration, interval):
+        print("Heyyyyy")
         end = start + interval
         if end > duration:
             end = duration
@@ -56,15 +59,19 @@ def predict_emotions(audio_path, interval,model_s):
         sf.write(segment_path, segment, samplerate)
         # Extract features
         feat = features_extractor(segment_path)
+        print("Shape", feat.shape)
         if feat is not None:
             feat = feat.reshape(1, -1)
+            print("Predicting....")
+            print("SUmmary: ", model_s.summary())
             predictions = model_s.predict(feat)
+            print("Predicted")
 
             # Format predictions
             predicted_emotions = {label_mapping[i]: round(float(predictions[0][i]), 4) for i in range(len(label_mapping))}
             
             emotions.append([start, end, predicted_emotions])
-
+    print("Emotions: ", emotions)
     return emotions
 
 def recognize_speech_from_file(audio_file_path):
@@ -137,10 +144,13 @@ def analyze_audio(file_path):
     return [word_count, speaking_rate, average_pause_length, articulation_rate]
 
 def speech(audio_path,model_path):
+    print("Model path", model_path)
     model_s = load_model(model_path)
+    print(model_s.summary)
     interval = 3.0  # Set the interval for emotion detection segments
 
     emotions = predict_emotions(audio_path, interval,model_s)
+    print("Hi, ,,")
     emotions_df = pd.DataFrame(emotions, columns=["Start", "End", "Emotion"],dtype='object')
     emotions_df['Emotion']=emotions_df['Emotion'].astype(object)
     # print(emotions_df)

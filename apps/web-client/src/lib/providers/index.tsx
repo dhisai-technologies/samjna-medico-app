@@ -7,7 +7,7 @@ import { createContext, useContext, useState } from "react";
 
 import { GlobalProvider } from "@ui/providers/global-provider";
 import { Toaster } from "sonner";
-import { NotificationProvider } from "./notification-provider";
+import { SocketProvider } from "./socket-provider";
 
 type AppContextType = {
   sidebarOpen: boolean;
@@ -26,9 +26,9 @@ export function AppProvider({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <GlobalProvider user={user}>
-      <NotificationProvider>
+      <SocketProvider>
         <AppContext.Provider value={{ sidebarOpen, setSidebarOpen }}>{children}</AppContext.Provider>
-      </NotificationProvider>
+      </SocketProvider>
       <Toaster
         className="toaster group"
         toastOptions={{
