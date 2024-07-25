@@ -7,16 +7,14 @@ import logging
 logging.getLogger('absl').setLevel(logging.ERROR)
 from moviepy.editor import VideoFileClip
 import pandas as pd
-from app.utils.session import create_session, send_analytics, send_csv
+from app.utils.session import send_analytics, send_csv
 from app.functions.Speech import *
 from app.functions.eye_track import *
 from app.functions.fer import *
 
 
 
-async def predict(video_path: str, user_id: str):
-	
-	uid = await create_session(user_id)
+async def predict(video_path: str, uid: str, user_id: str):
 
 	models_folder='/Users/nagasaivegur/Developer/work/dhisai/samjna-medico-app/apps/python-server/app/models'    #change this path to folder_path where models are saved
 	#MODELS FOLDER

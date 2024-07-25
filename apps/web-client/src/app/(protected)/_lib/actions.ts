@@ -7,5 +7,14 @@ export async function processFile(formData: FormData) {
     method: "POST",
     body: formData,
   });
-  return response.json();
+  if (!response.ok) {
+    throw new Error("Failed to process file");
+  }
+  const json = await response.json();
+  const { uid } = json.data as {
+    uid: string;
+  };
+  return {
+    uid,
+  };
 }

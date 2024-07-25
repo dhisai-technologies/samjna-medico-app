@@ -28,11 +28,3 @@ async def send_csv(json = None):
 						json=json,
 				)
 				print("HTTP Request sent. Response status code: ", response.status_code)
-
-async def send_log(json = None):
-	async with httpx.AsyncClient() as client:
-				response = await client.post(
-						f'{NODE_SERVER}/log',
-						json=json,
-				)
-				print("HTTP Request sent. Response status code: ", response.status_code)

@@ -14,7 +14,7 @@ function startServer() {
 
   const io: Server = new Server(httpServer, {
     cors: {
-      origin: config.CLIENT_URL,
+      origin: "*",
     },
   });
 
