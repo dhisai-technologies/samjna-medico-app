@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Form, BackgroundTasks
 from fastapi.responses import JSONResponse
-import socketio
+# import socketio
 from app.utils.file import filepath_file, filepath_url
 from app.utils.session import create_session
 from app.process import predict
@@ -10,12 +10,17 @@ import uvicorn
 app = FastAPI()
 
 
-sio=socketio.AsyncServer(cors_allowed_origins='*',async_mode='asgi')
-socket_app = socketio.ASGIApp(sio)
-app.mount("/socket.io", socket_app)
+# sio=socketio.AsyncServer(cors_allowed_origins='*',async_mode='asgi')
+# socket_app = socketio.ASGIApp(sio)
+# app.mount("/socket.io", socket_app)
 # await sio.emit("result", {
 #         "sid": sid,
 #     }, room=sid)
+
+
+@app.get("/")
+async def read_root():
+    return {"ok": "true" }
 
 @app.post("/process/file")
 async def process_file(background_tasks: BackgroundTasks, files: UploadFile = File(...), user_id: str = Form(...)):

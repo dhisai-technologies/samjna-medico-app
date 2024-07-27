@@ -3,12 +3,15 @@ export const appConfig = {
   description: "A Samjna Analytics Application - Words and Beyond",
   company: "Samjna Analytics",
   copyright: "2024",
-  url: "http://localhost:8000",
-  notifier: "http://localhost:8001",
-  fastapi: "http://localhost:8002",
+  url: "",
   links: {
     twitter: "",
     company: "",
+  },
+  api: {
+    node: "http://node-server:8001",
+    nodeSocket: "http://localhost/api",
+    python: "http://python-server:8002",
   },
 };
 

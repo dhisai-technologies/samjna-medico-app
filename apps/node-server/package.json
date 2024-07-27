@@ -13,7 +13,6 @@
     "@aws-sdk/s3-request-presigner": "^3.617.0",
     "@packages/broker": "workspace:*",
     "@packages/database": "workspace:*",
-    "aws-sdk": "^2.1661.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",

@@ -8,7 +8,7 @@ logging.getLogger('absl').setLevel(logging.ERROR)
 from moviepy.editor import VideoFileClip
 import pandas as pd
 from app.utils.session import send_analytics, send_csv
-from app.functions.Speech import *
+# from app.functions.Speech import *
 from app.functions.eye_track import *
 from app.functions.fer import *
 
@@ -16,7 +16,7 @@ from app.functions.fer import *
 
 async def predict(video_path: str, uid: str, user_id: str):
 
-	models_folder='/Users/nagasaivegur/Developer/work/dhisai/samjna-medico-app/apps/python-server/app/models'    #change this path to folder_path where models are saved
+	models_folder='/app/app/models'    #change this path to folder_path where models are saved
 	#MODELS FOLDER
 	speech_model=os.path.join(models_folder,'speech.keras')
 	fer_model=os.path.join(models_folder,'22.6_AffectNet_10K_part2.pt')
@@ -102,15 +102,15 @@ async def predict(video_path: str, uid: str, user_id: str):
 		}
 	})
 
-	await send_csv({
-			"uid": uid,
-			"user_id": user_id, 
-			"csv": {
-				"eye_tracking": eye_df.to_json(orient='records'),
-				"fer": fer_df.to_json(orient='records'),
-				"speech": {}
-			}
-	})
+	# await send_csv({
+	# 		"uid": uid,
+	# 		"user_id": user_id, 
+	# 		"csv": {
+	# 			"eye_tracking": eye_df.to_json(orient='records'),
+	# 			"fer": fer_df.to_json(orient='records'),
+	# 			"speech": {}
+	# 		}
+	# })
 
 	if os.path.exists(audio_path):
 			os.remove(audio_path)

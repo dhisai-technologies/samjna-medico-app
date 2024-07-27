@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1720776774927,
-      "tag": "0000_dapper_scalphunter",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1721706942420,
-      "tag": "0001_sharp_lenny_balinger",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1721717830135,
-      "tag": "0002_eager_unicorn",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1721845516280,
-      "tag": "0003_tough_wolfsbane",
+      "when": 1721900146272,
+      "tag": "0000_curvy_thing",
       "breakpoints": true
     }
   ]

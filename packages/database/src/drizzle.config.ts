@@ -7,7 +7,7 @@ export default defineConfig({
   schema: './src/schema.ts',
   dbCredentials: {
     url: process.env.DB_URL!,
-    ssl: false, // Explicitly disable SSL (Should be true in production)
+    // ssl: false, // Explicitly disable SSL (Should be true in production)
   },
   // Print all statements
   verbose: true,

@@ -3,7 +3,7 @@
 import { appConfig } from "@ui-utils/config";
 
 export async function processFile(formData: FormData) {
-  const response = await fetch(`${appConfig.fastapi}/process/file`, {
+  const response = await fetch(`${appConfig.api.python}/process/file`, {
     method: "POST",
     body: formData,
   });

@@ -29,7 +29,9 @@ export function SocketProvider({
   const { user } = useAuth();
   useEffect(() => {
     if (!user?.email) return;
-    const socket = io(appConfig.notifier);
+    const socket = io(appConfig.api.nodeSocket, {
+      transports: ["websocket", "polling"],
+    });
     socket.on("connect", () => {
       socket.emit("receive-notifications", user.email);
       socket.emit("receive-analytics", user.email);

@@ -1,7 +1,7 @@
 import httpx
 import time
 
-NODE_SERVER = "http://localhost:8001"
+NODE_SERVER = "http://node-server:8001"
 
 async def create_session(user_id: str):
 	uid = f"{int(time.time() * 1000)}"

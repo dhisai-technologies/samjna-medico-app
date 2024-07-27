@@ -58,12 +58,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   toast.promise(logout(), {
                     loading: "Logging out...",
                     success: () => {
-                      window.location.href = `${appConfig.url}/auth${user.role === "ADMIN" ? "/admin/login" : "/login"}?redirectTo=${window.location.href}`;
+                      window.location.href = `${window.location.origin}/auth${user.role === "ADMIN" ? "/admin/login" : "/login"}?redirectTo=${window.location.href}`;
                       setIsLoading(false);
                       return "Logged out successfully";
                     },
                     error: (err) => {
-                      window.location.href = `${appConfig.url}/auth${user.role === "ADMIN" ? "/admin/login" : "/login"}?redirectTo=${window.location.href}`;
+                      window.location.href = `${window.location.origin}/auth${user.role === "ADMIN" ? "/admin/login" : "/login"}?redirectTo=${window.location.href}`;
                       setIsLoading(false);
                       return getErrorMessage(err);
                     },

@@ -1,3 +1,4 @@
+opencv-python==4.10.0.84
 sounddevice
 numpy
 soundfile
@@ -7,14 +8,17 @@ pandas
 librosa
 SpeechRecognition
 resampy==0.4.3
-pyAudioAnalysis
 hmmlearn
 eyed3
 imblearn
 plotly
 mediapipe==0.10.14
-opencv-python==4.10.0.84
+pyAudioAnalysis
 torch
 torchvision
 timm==1.0.3
 pillow
+moviepy
+fastapi
+python-socketio
+uvicorn

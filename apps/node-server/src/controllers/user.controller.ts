@@ -10,9 +10,9 @@ import { db } from "@/db";
 import { notifier } from "@/tools";
 
 export const getUsers: AppController = catchAsync(async (req, res) => {
-  const { user, search, filtering, sorting, pagination } = req;
+  const { search, filtering, sorting, pagination } = req;
   const where = and(
-    ne(users.id, user.id),
+    ne(users.role, "ADMIN"),
     getSearch([users.email, users.name], search),
     ...getFilters(users, filtering),
   );

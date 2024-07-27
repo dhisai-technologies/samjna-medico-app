@@ -3,7 +3,6 @@ import { z } from "zod";
 
 import { config } from "@/config";
 import { db } from "@/db";
-import { logger } from "@/tools";
 import { type AppController, AppError, StatusCodes, catchAsync } from "@/utils/errors";
 import { signToken } from "@/utils/helpers";
 import { generateOtp, sendOtp } from "@/utils/otp";
@@ -64,18 +63,18 @@ export const requestOtp: AppController = catchAsync(async (req, res) => {
       message: "Otp sent successfully to your mail",
     });
   }
-  const suspendedDate = new Date(existing.updatedAt.getTime() + config.OTP_SUSPEND_TIME * 60 * 1000);
-  if (existing.retries >= config.OTP_RETRIES && new Date().getTime() < suspendedDate.getTime()) {
-    logger.trace({
-      userId: user.id,
-      event: "Auth",
-      message: `Account suspended for ${config.OTP_SUSPEND_TIME} minutes`,
-    });
-    throw new AppError(
-      `Your account has been suspended for ${config.OTP_SUSPEND_TIME} minutes, please try later`,
-      StatusCodes.BAD_REQUEST,
-    );
-  }
+  // const suspendedDate = new Date(existing.updatedAt.getTime() + config.OTP_SUSPEND_TIME * 60 * 1000);
+  // if (existing.retries >= config.OTP_RETRIES && new Date().getTime() < suspendedDate.getTime()) {
+  //   logger.trace({
+  //     userId: user.id,
+  //     event: "Auth",
+  //     message: `Account suspended for ${config.OTP_SUSPEND_TIME} minutes`,
+  //   });
+  //   throw new AppError(
+  //     `Your account has been suspended for ${config.OTP_SUSPEND_TIME} minutes, please try later`,
+  //     StatusCodes.BAD_REQUEST,
+  //   );
+  // }
   const { otp, expiresAt } = generateOtp();
   await db
     .update(otps)

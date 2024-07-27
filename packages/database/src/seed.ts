@@ -17,6 +17,11 @@ async function main() {
   await client.connect();
   console.log("📦 connected to user database");
   await db.insert(users).values({
+    email: "samjnaanalytics@gmail.com",
+    name: "Anjana Admin",
+    role: "ADMIN",
+  });
+  await db.insert(users).values({
     email: "nsvegur01@gmail.com",
     name: "Nagasai Vegur",
     role: "ADMIN",

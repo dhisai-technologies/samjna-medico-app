@@ -5,15 +5,13 @@ import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
 
+import { getErrorMessage } from "@ui-utils/helpers";
 import { Loaders } from "@ui/components/loaders";
 import { Button } from "@ui/components/ui/button";
 import { Form, FormError } from "@ui/components/ui/form";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@ui/components/ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@ui/components/ui/input-otp";
 import { useAuth } from "@ui/providers/auth-provider";
-
-import { appConfig } from "@ui-utils/config";
-import { getErrorMessage } from "@ui-utils/helpers";
 import { toast } from "sonner";
 import { resendUserOtp, verifyUserOtp } from "../_lib/actions";
 import type { VerifyUserOtpSchema } from "../_lib/validations";
@@ -92,7 +90,7 @@ export function VerifyUserOtpForm({
 
   useEffect(() => {
     if (state?.user) {
-      const redirectTo = searchParams.get("redirectTo") || appConfig.url;
+      const redirectTo = searchParams.get("redirectTo") || window.location.origin;
       setUser(state.user);
       window.location.href = redirectTo;
     }
