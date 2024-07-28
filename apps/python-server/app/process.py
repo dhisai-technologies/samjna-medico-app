@@ -88,9 +88,9 @@ async def predict(video_path: str, uid: str, user_id: str):
 	if word is not None:
 			speech = {
 					"number_of_words": word[0],
-					"speaking_rate": f"{word[1]} syllables per second",
+					"speaking_rate": f"{round(word[1], 3)} syllables per second",
 					"average_pause_duration": f"{word[2]} seconds",
-					"articulation_rate": f"{word[3]} syllables per second",
+					"articulation_rate": f"{round(word[3], 3)} syllables per second",
 			}
 	
 	speech["major_emotion"] = major_emotion

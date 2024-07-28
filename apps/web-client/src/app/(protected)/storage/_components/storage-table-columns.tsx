@@ -15,7 +15,7 @@ import {
 } from "@ui/components/ui/dropdown-menu";
 import { useAuth } from "@ui/providers/auth-provider";
 import { format } from "date-fns";
-import { BarChart2, Ellipsis, Globe, PencilLine, Trash } from "lucide-react";
+import { Ellipsis, Globe, PencilLine, Radar, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { deleteFile } from "../_lib/actions";
 
@@ -86,7 +86,7 @@ export function getColumns(): ColumnDef<File>[] {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
                 <DropdownMenuItem onSelect={() => {}} className="space-x-2 cursor-pointer">
-                  <BarChart2 className="w-3 h-3" />
+                  <Radar className="w-3 h-3" />
                   <span>Infer</span>
                 </DropdownMenuItem>
                 {user?.id === row.original.userId && (

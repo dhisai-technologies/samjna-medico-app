@@ -15,7 +15,7 @@ interface FERProps {
 }
 
 export function FER({ analytics, csv }: FERProps) {
-  const { chartConfig, chartData, labels } = getFERData(analytics);
+  const { chartConfig, chartData } = getFERData(analytics);
   const downloadCSV = useExportCSV();
   return (
     <Card className="relative flex flex-col h-[400px] col-span-2">
@@ -39,7 +39,26 @@ export function FER({ analytics, csv }: FERProps) {
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[300px]">
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent nameKey="percentage" hideLabel />} />
-            <Pie data={chartData} dataKey="percentage">
+            <Pie
+              data={chartData}
+              dataKey="percentage"
+              label={({ payload, ...props }) => {
+                return (
+                  <text
+                    cx={props.cx}
+                    cy={props.cy}
+                    x={props.x}
+                    y={props.y}
+                    textAnchor={props.textAnchor}
+                    dominantBaseline={props.dominantBaseline}
+                    fill="hsla(var(--foreground))"
+                  >
+                    {payload.percentage}
+                  </text>
+                );
+              }}
+              nameKey="emotion"
+            >
               <LabelList
                 dataKey="emotion"
                 className="fill-background"
@@ -50,35 +69,6 @@ export function FER({ analytics, csv }: FERProps) {
             </Pie>
           </PieChart>
         </ChartContainer>
-        <div className="p-4 text-xs">
-          <div className="flex flex-col">
-            <div className="flex border-border border-y border-l bg-muted">
-              <div className="p-2 w-16 border-r border-border" />
-              {labels.map((label) => (
-                <div key={label} className="border-r border-border p-2 flex justify-center items-center w-16">
-                  {label}
-                </div>
-              ))}
-            </div>
-            {analytics.matrix.map((row, rowIndex) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              <div key={rowIndex} className="flex">
-                <div className="border-x border-b border-border p-2 flex justify-center items-center w-16 bg-muted">
-                  {labels[rowIndex]}
-                </div>
-                {row.map((value, colIndex) => (
-                  <div
-                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                    key={colIndex}
-                    className="border-r border-b border-border p-2 flex justify-center items-center w-16"
-                  >
-                    {value}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
       </CardContent>
     </Card>
   );

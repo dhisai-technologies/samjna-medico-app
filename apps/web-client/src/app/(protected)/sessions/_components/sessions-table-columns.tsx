@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@ui/components/ui/dropdown-menu";
 import { format } from "date-fns";
-import { BarChart2, Ellipsis, Eye, Trash } from "lucide-react";
+import { Ellipsis, Eye, Radar, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteSession } from "../_lib/actions";
@@ -72,7 +72,7 @@ export function getColumns(): ColumnDef<Session>[] {
                   }}
                   className="space-x-2 cursor-pointer"
                 >
-                  <BarChart2 className="w-3 h-3" />
+                  <Radar className="w-3 h-3" />
                   <span>Re Infer</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
