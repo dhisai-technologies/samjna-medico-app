@@ -10,7 +10,7 @@ export const sidebar = [
   {
     title: "Sessions",
     href: "/sessions",
-    active: "default",
+    active: "include",
     icon: <Shapes className="h-5 w-5 flex-shrink-0 stroke-[1.5px]" />,
   },
   {

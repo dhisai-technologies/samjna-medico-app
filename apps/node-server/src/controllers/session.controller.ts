@@ -19,9 +19,8 @@ export const getSessions: AppController = catchAsync(async (req, res) => {
         key: sessions.key,
         uid: sessions.uid,
         analytics: sessions.analytics,
-        csv: sessions.csv,
         createdAt: sessions.createdAt,
-        updateAt: sessions.updatedAt,
+        updatedAt: sessions.updatedAt,
         userId: users.id,
         users: {
           id: users.id,

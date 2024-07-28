@@ -3,8 +3,6 @@ import { Logger as LogConsumer, Notifier as NotificationConsumer } from "@packag
 import { Logger, Notifier } from "@packages/broker/producers";
 import { config } from "./config";
 
-console.log("URL: ", config.AMQP_URL);
-
 export const logConsumer = new LogConsumer(config.AMQP_URL);
 export const logger = new Logger(config.AMQP_URL);
 export const notificationConsumer = new NotificationConsumer(config.AMQP_URL);

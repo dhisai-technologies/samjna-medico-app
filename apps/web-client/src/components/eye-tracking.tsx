@@ -2,7 +2,7 @@
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
 
 import { useExportCSV } from "@/lib/hooks/export-csv";
-import type { Analytics, CSV } from "@/lib/types/analytics";
+import type { Analytics, CSV } from "@/lib/types";
 import { Button } from "@ui/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@ui/components/ui/card";
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@ui/components/ui/chart";
@@ -37,7 +37,7 @@ export function EyeTracking({ analytics, csv }: EyeTrackingProps) {
         <Button
           variant="secondary"
           onClick={() => {
-            downloadCSV(csv, "eye-tracking.csv");
+            downloadCSV(JSON.parse(csv as unknown as string), "eye-tracking.csv");
           }}
           size="icon"
           className="absolute top-3 right-3"

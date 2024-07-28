@@ -1,6 +1,9 @@
 "use client";
 
+import { EyeTracking } from "@/components/eye-tracking";
+import { FER } from "@/components/fer";
 import { MultiStepLoader } from "@/components/multi-step-loader";
+import { Speech } from "@/components/speech";
 import { TypewriterEffectSmooth } from "@/components/typewriter-effect";
 import SessionImage from "@/lib/images/session.png";
 import { useSocket } from "@/lib/providers/socket-provider";
@@ -18,9 +21,6 @@ import RecordRTC from "recordrtc";
 import { processFile } from "../_lib/actions";
 import { loadingStates, questions } from "../_lib/config";
 import { createFileFromBlob } from "../_lib/utils";
-import { EyeTracking } from "./eye-tracking";
-import { FER } from "./fer";
-import { Speech } from "./speech";
 
 export default function VideoSession() {
   const [recording, setRecording] = useState(false);

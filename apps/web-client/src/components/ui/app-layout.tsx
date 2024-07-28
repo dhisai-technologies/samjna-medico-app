@@ -45,7 +45,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   link={link}
                   className={cn(
                     !sidebarOpen && "w-9 h-9",
-                    pathname === link.href && "bg-foreground/10 text-foreground",
+                    link.active === "default" && pathname === link.href && "bg-foreground/10 text-foreground",
+                    link.active === "include" && pathname.includes(link.href) && "bg-foreground/10 text-foreground",
                   )}
                 />
               ))}

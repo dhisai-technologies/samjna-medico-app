@@ -19,7 +19,9 @@ function startServer() {
   });
 
   io.on("connection", (socket) => {
+    console.log("Connected to socket client with id: ", socket.id);
     socket.on("receive-notifications", async (email: string) => {
+      console.log("Requested for notifications for: ", email);
       const user = await db.query.users.findFirst({ where: eq(users.email, email) });
       if (!user) return;
       socket.join(`notification-${user.id}`);

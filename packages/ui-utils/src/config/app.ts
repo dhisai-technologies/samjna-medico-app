@@ -10,7 +10,7 @@ export const appConfig = {
   },
   api: {
     node: "http://node-server:8001",
-    nodeSocket: "http://localhost/api",
+    nodeSocket: "http://localhost:8001",
     python: "http://python-server:8002",
   },
 };

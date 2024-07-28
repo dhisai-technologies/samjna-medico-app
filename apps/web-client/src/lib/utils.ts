@@ -1,5 +1,5 @@
 import type { ChartConfig } from "@ui/components/ui/chart";
-import type { Analytics } from "./types/analytics";
+import type { Analytics } from "./types";
 
 export function getFERData(data: Analytics["fer"]) {
   const labels = Object.keys(data.class_wise_frame_count);

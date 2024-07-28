@@ -57,4 +57,4 @@ ENV PORT=${PORT}
 ENV NODE_ENV=production
 EXPOSE ${PORT}
 
-CMD node apps/web-client/server.js
+CMD NODE_TLS_REJECT_UNAUTHORIZED='0' node apps/web-client/server.js

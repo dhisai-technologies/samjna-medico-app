@@ -2,7 +2,7 @@
 import { LabelList, Pie, PieChart } from "recharts";
 
 import { useExportCSV } from "@/lib/hooks/export-csv";
-import type { Analytics, CSV } from "@/lib/types/analytics";
+import type { Analytics, CSV } from "@/lib/types";
 import { getFERData } from "@/lib/utils";
 import { Button } from "@ui/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/components/ui/card";
@@ -27,7 +27,7 @@ export function FER({ analytics, csv }: FERProps) {
         <Button
           variant="secondary"
           onClick={() => {
-            downloadCSV(csv, "fer.csv");
+            downloadCSV(JSON.parse(csv as unknown as string), "fer.csv");
           }}
           size="icon"
           className="absolute top-3 right-3"

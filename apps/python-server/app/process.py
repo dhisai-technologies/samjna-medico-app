@@ -102,15 +102,15 @@ async def predict(video_path: str, uid: str, user_id: str):
 		}
 	})
 
-	# await send_csv({
-	# 		"uid": uid,
-	# 		"user_id": user_id, 
-	# 		"csv": {
-	# 			"eye_tracking": eye_df.to_json(orient='records'),
-	# 			"fer": fer_df.to_json(orient='records'),
-	# 			"speech": {}
-	# 		}
-	# })
+	await send_csv({
+			"uid": uid,
+			"user_id": user_id, 
+			"csv": {
+				"eye_tracking": eye_df.head(10).to_json(orient='records'),
+				"fer": fer_df.head(10).to_json(orient='records'),
+				"speech": {}
+			}
+	})
 
 	if os.path.exists(audio_path):
 			os.remove(audio_path)

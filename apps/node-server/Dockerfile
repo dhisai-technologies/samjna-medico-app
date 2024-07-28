@@ -53,4 +53,4 @@ ENV PORT=${PORT}
 ENV NODE_ENV=production
 EXPOSE ${PORT}
 
-CMD npm start
+CMD NODE_TLS_REJECT_UNAUTHORIZED='0' node -r esbuild-register dist/index.js

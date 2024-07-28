@@ -1,11 +1,11 @@
 import type { Notification } from "@ui-utils/types";
 
+import type { Analytics, CSV } from "@/lib/types";
 import { appConfig } from "@ui-utils/config";
 import { useAuth } from "@ui/providers/auth-provider";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import type { Analytics, CSV } from "../types/analytics";
 
 interface SocketContextType {
   notifications: Notification[];
@@ -29,13 +29,18 @@ export function SocketProvider({
   const { user } = useAuth();
   useEffect(() => {
     if (!user?.email) return;
+    console.log("Connecting to socket server");
     const socket = io(appConfig.api.nodeSocket, {
       transports: ["websocket", "polling"],
     });
     socket.on("connect", () => {
+      console.log("Connected to socket server");
       socket.emit("receive-notifications", user.email);
       socket.emit("receive-analytics", user.email);
-      socket.on("notifications", (notifications: Notification[]) => setNotifications(notifications));
+      socket.on("notifications", (notifications: Notification[]) => {
+        console.log("Received notifications: ", notifications);
+        setNotifications(notifications);
+      });
       socket.on("notification", (notification: Notification) => setNotifications((prev) => [...prev, notification]));
       socket.on("analytics", (analytics: Analytics) => {
         setAnalytics(analytics);
