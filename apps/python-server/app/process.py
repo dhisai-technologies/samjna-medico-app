@@ -8,7 +8,7 @@ logging.getLogger('absl').setLevel(logging.ERROR)
 from moviepy.editor import VideoFileClip
 import pandas as pd
 from app.utils.session import send_analytics, send_csv
-# from app.functions.Speech import *
+from app.functions.Speech import speech as speech_pred
 from app.functions.eye_track import *
 from app.functions.fer import *
 
@@ -56,19 +56,19 @@ async def predict(video_path: str, uid: str, user_id: str):
 	fer_df.to_csv(fer_log_path, index=False)
 
 	# SPEECH EMOTION RECOGNITION
-	# emotions_df,major_emotion,word=speech(audio_path,speech_model)
-	# emotions_df.to_csv(Speech_log_path, index=False)
+	emotions_df,major_emotion,word = speech_pred(audio_path,speech_model)
+	emotions_df.to_csv(Speech_log_path, index=False)
 
-	# print("\n*****Speech Predictions*****\n")
-	# print("Major Emotion : ",major_emotion)
-	# if word is not None:
-	# 		print(f'Number of words = {word[0]}')
-	# 		print(f'speaking rate = {word[1]} syllables per second')
-	# 		print(f'Average Pause Duration = {word[2]} seconds')
-	# 		print(f'Articulation rate = {word[3]} syllables per second')
-	# else:
-	# 		print("Transcript Failed")
-	# print(f"Emotion log saved to {eye_log_path}")
+	print("\n*****Speech Predictions*****\n")
+	print("Major Emotion : ",major_emotion)
+	if word is not None:
+			print(f'Number of words = {word[0]}')
+			print(f'speaking rate = {word[1]} syllables per second')
+			print(f'Average Pause Duration = {word[2]} seconds')
+			print(f'Articulation rate = {word[3]} syllables per second')
+	else:
+			print("Transcript Failed")
+	print(f"Emotion log saved to {eye_log_path}")
 
 	print("\n*****EYE tracking Predictions*****\n")
 	print("Total Blinks : ",preds[-1][2])
@@ -82,6 +82,18 @@ async def predict(video_path: str, uid: str, user_id: str):
 	print("\nMatrix : ",)
 	for row in mat:
 			print(row)
+
+	speech = {}
+	
+	if word is not None:
+			speech = {
+					"number_of_words": word[0],
+					"speaking_rate": f"{word[1]} syllables per second",
+					"average_pause_duration": f"{word[2]} seconds",
+					"articulation_rate": f"{word[3]} syllables per second",
+			}
+	
+	speech["major_emotion"] = major_emotion
 
 	await send_analytics({
 		"uid": uid,
@@ -97,7 +109,8 @@ async def predict(video_path: str, uid: str, user_id: str):
 				"matrix": mat
 			},
 			"speech": {
-
+				"major_emotion": major_emotion,
+				**speech
 			}
 		}
 	})
@@ -108,7 +121,7 @@ async def predict(video_path: str, uid: str, user_id: str):
 			"csv": {
 				"eye_tracking": eye_df.head(10).to_json(orient='records'),
 				"fer": fer_df.head(10).to_json(orient='records'),
-				"speech": {}
+				"speech": emotions_df.head(10).to_json(orient='records')
 			}
 	})
 

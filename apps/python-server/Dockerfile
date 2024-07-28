@@ -1,7 +1,7 @@
 FROM python:3.12
 
 RUN apt-get update -y
-RUN apt-get install -y libhdf5-dev libsndfile1 libgl1
+RUN apt-get install -y libhdf5-dev libsndfile1 libgl1 flac
 
 WORKDIR /app
 

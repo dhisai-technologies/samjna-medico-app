@@ -19,7 +19,7 @@ export interface EyeTracking {
 
 export interface Analytics {
   fer: FER;
-  speech: Record<string, unknown>;
+  speech: Record<string, string>;
   eye_tracking: EyeTracking;
 }
 
